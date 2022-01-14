@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import Button from '../../components/button/Button';
 
 type viewType =
 {
@@ -50,6 +51,9 @@ const ViewForm = () => {
         ))
       }
       <div />
+      <div>
+        <Button name="Atpakaļ" onClick={() => navigate('/document')} />
+      </div>
     </div>
   );
 };

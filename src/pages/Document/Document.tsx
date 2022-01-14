@@ -50,7 +50,7 @@ const Document = () => {
             <th>Dokumenta nosaukums</th>
             <th>Izveidošanas datums</th>
             <th>Dokumenta lielums</th>
-            <th>1</th>
+            <th>Papildus info</th>
           </tr>
         </thead>
         <tbody>

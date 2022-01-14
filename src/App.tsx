@@ -4,7 +4,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Document from './pages/Document/Document';
 import FormGenerator from './pages/FormGenarator/FormGenerator';
 import ViewForm from './pages/ViewForm/ViewForm';
-import ErrorPage from './components/ErrorPage/ErrorPage';
+import ErrorPage from './pages/ErrorPage/ErrorPage';
 
 function App() {
   return (

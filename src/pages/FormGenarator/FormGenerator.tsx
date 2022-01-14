@@ -7,11 +7,11 @@ type FormDataType = {
   'document_name': string,
   'form_values': [
     {
-      'field_seq': number,
-      'is_mandatory': boolean,
+      'field_seq': string,
+      'is_mandatory': number,
       'field_type': number,
       'field_name': string,
-      'select_values'?: string | null
+      select_values?: string | null,
     },
     ]
 }
@@ -24,36 +24,42 @@ const FormGenerator = () => {
   const [checkboxValue, setCheckBox] = useState(false);
   const [inputDocumentField, setInputDocumentField] = useState('');
   const [textArea, setTextArea] = useState<string>('');
+  const [selectValue, setSelectValue] = useState<string | null>();
 
   const SubmitHandler = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (fieldType !== '2') {
+      setSelectValue(null);
+    } else {
+      setSelectValue(textArea);
+    }
     setFormData({
       document_name: inputDocumentField,
       form_values: [
         {
-          field_seq: fieldSeq,
-          is_mandatory: checkboxValue,
+          field_seq: fieldSeq.toString(),
+          is_mandatory: Number(checkboxValue),
           field_type: Number(fieldType),
           field_name: inputName,
-          select_values: textArea || null,
+          select_values: selectValue,
         },
       ],
     });
   };
+
   useEffect(() => {
     if (formData) {
-      const toJson = JSON.stringify(formData);
       setTimeout(() => {
         axios.post(
           '/api/v1/documents/create',
-          { data: toJson },
+          formData,
           {
             headers: {
               'API-KEY': 'secret-api-key',
             },
           },
         ).then((res) => console.log(res)).catch((reason) => console.log(reason));
-      }, 2000);
+      }, 1000);
     }
   }, [SubmitHandler]);
   return (
@@ -98,23 +104,25 @@ const FormGenerator = () => {
         {
           fieldType === '2'
           && (
-            <textarea
-              cols={80}
-              rows={10}
-              value={textArea}
-              onChange={(e) => setTextArea(e.target.value)}
-            />
+            <div>
+              <textarea
+                cols={80}
+                rows={10}
+                value={textArea}
+                onChange={(e) => setTextArea(e.target.value)}
+              />
+              <label htmlFor="required">
+                Obligāts
+                <input
+                  name="required"
+                  type="checkbox"
+                  checked={checkboxValue}
+                  onChange={(e) => setCheckBox(e.target.checked)}
+                />
+              </label>
+            </div>
           )
         }
-        <label htmlFor="required">
-          Obligāts
-          <input
-            name="required"
-            type="checkbox"
-            checked={checkboxValue}
-            onChange={(e) => setCheckBox(e.target.checked)}
-          />
-        </label>
         <Button name="Saglabāt" onClick={() => null} />
       </form>
     </div>
